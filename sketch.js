@@ -1,46 +1,70 @@
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  translate(windowWidth/2, windowHeight/2)
-  angel = radians(90)
+  createCanvas(windowWidth/20*19, windowHeight/20*19); //canvas
+  translate(width/2, height/2)//unused
+  angel = 90//sets angel
+  background(80)
+  line(0, -height/2, 0, height/2)
 }
 
 
-let running = true
+let running = true //stops program
 function draw() {
   if(!running) return
-  addWeigth()
-  angel = makeAngel()
-  drawScene()
+  addWeigth() //adds weight to system
+  angelCalc(calcEffect()) //creates the next angel
+  // drawScene() //draws the current scene
+}
+
+function mousePoint(axes){//makes weight size base on mouse
+  if(axes) return(Math.floor((mouseX-width/2)/20))//left - right
+  return (Math.floor(mouseY/20))//up - down
 }
 
 function addWeigth(){
-  
-  
+  if(mouseButton == "center") {
+    if(mousePoint(true)>0) {
+      right[right.length] = new WeightMath(mousePoint(true),mousePoint(false), true) //creates a weigth on right side 
+    }
+    else {
+      left[left.length] = new WeightMath(mousePoint(true),mousePoint(false), false) //creates a weigth on left side
+    }
+    mouseButton = 0 // resets mouse
+  }
 }
-
-function drawScene(){}
 
 const right = []
 const left = []
-const weights = [left,right]
 let angel
 
-function makeAngel(){
-  for (let i = 0; weights[1].length; i++){
-    let weight = weights[1][i]
-    let rightEffect = weight.math()
+function calcEffect(){
+  
+  let leftEffect = 0
+  let rightEffect = 0
+  
+  for (let i = 0; i < right.length; i++){
+    rightEffect += right[i].math() //adds effect on right
   }
-  for(let i = 0; weights[0].length; i++){
-    let weight = weights[0][i]
-    let rightEffect = weight.math()
+  for(let i = 0; i < left.length; i++){
+    leftEffect += left[i].math() // adds effect on left
+  }
+  return(rightEffect-leftEffect) //logs total effect
+}
+
+function WeightMath (length, weight, side) { //stores individual weights
+    this.length = length
+    this.side = side
+    this.weight = weight
+    if (!this.side) this.length = -length
+
+  this.math = function () {
+    return (Math.floor(this.length * this.weight * 9.82/*gravity*/* Math.sin (radians (angelCalc()))))
+  }
+  function angelCalc(){
+    if (this.side) return angel
+    return angel+180
   }
 }
 
-function weightMath(weight,length){
-  this.weight = weight
-  this.length = length
-  function math(){
-    let effect = this.length * this.weight*9.82*Math.sin(radians(angel))
-    return(effect)
-  }
+function angelCalc(effect){
+
 }
