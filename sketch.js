@@ -10,6 +10,7 @@ function setup() {
 
 let running = true //stops program
 function draw() {
+  angel = angel % 360
   if(!running) return
   background(backgroundShade)
   line(width/2, height, width/2, -height)
@@ -71,8 +72,9 @@ function WeightMath (length, weight, side) { //stores individual weights
 let momentum = 0
 
 function angelCalc(effect){
-angel += effect/300 + momentum/3
-momentum -= effect/300 + momentum/3
+  momentum = effect/300 + momentum
+  if(angel > 180) angel += momentum
+  else angel -= momentum
 }
 
 function drawScene(){
