@@ -61,9 +61,9 @@ function WeightMath (length, weight, side) { //stores individual weights
     if (!this.side) this.length = -length
 
   this.math = function () {
-    return (Math.floor(this.length * this.weight * 9.82/*gravity*/* Math.sin (radians (angelCalc()))))
+    return (Math.floor(this.length * this.weight * 9.82/*gravity*/* Math.sin (radians (localAngelCalc()))))
   }
-  function angelCalc(){
+  function localAngelCalc(){
     if (this.side) return angel
     return angel+180
   }
@@ -72,9 +72,9 @@ function WeightMath (length, weight, side) { //stores individual weights
 let momentum = 0
 
 function angelCalc(effect){
-  momentum = effect/300 + momentum
-  if(angel > 180) angel += momentum
-  else angel -= momentum
+  momentum = effect/400 + momentum/1.1
+  if(angel < 180) angel += momentum*0.95
+  else angel -= momentum*0.95
 }
 
 function drawScene(){
