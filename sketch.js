@@ -1,18 +1,21 @@
+let backgroundShade = 80
+
 function setup() {
   createCanvas(windowWidth/20*19, windowHeight/20*19); //canvas
-  translate(width/2, height/2)//unused
+  push()
   angel = 90//sets angel
-  background(80)
-  line(0, -height/2, 0, height/2)
+  background(backgroundShade)
+  line(width/2, height, width/2, -height)
 }
-
 
 let running = true //stops program
 function draw() {
   if(!running) return
+  background(backgroundShade)
+  line(width/2, height, width/2, -height)
   addWeigth() //adds weight to system
   angelCalc(calcEffect()) //creates the next angel
-  // drawScene() //draws the current scene
+  drawScene() //draws the current scene
 }
 
 function mousePoint(axes){//makes weight size base on mouse
@@ -65,6 +68,20 @@ function WeightMath (length, weight, side) { //stores individual weights
   }
 }
 
-function angelCalc(effect){
+let momentum = 0
 
+function angelCalc(effect){
+angel += effect/300 + momentum/3
+momentum -= effect/300 + momentum/3
+}
+
+function drawScene(){
+  push()
+  translate(width/2, height/2)
+  rotate(radians(90-angel))
+  stroke(255, 10, 10)
+  line(0, 0, width/2, 0)
+  stroke(10, 10, 255)
+  line(-width/2, 0, 0, 0)
+  pop()
 }
