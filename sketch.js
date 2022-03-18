@@ -1,4 +1,5 @@
 let backgroundShade = 80
+let shortening = 20
 
 function setup() {
   createCanvas(windowWidth/20*19, windowHeight/20*19); //canvas
@@ -20,8 +21,8 @@ function draw() {
 }
 
 function mousePoint(axes){//makes weight size base on mouse
-  if(axes) return(Math.floor((mouseX-width/2)/20))//left - right
-  return (Math.floor(mouseY/20))//up - down
+  if(axes) return(Math.floor((mouseX-width/2)/shortening))//left - right
+  return (Math.floor((height-mouseY)/shortening))//up - down
 }
 
 function addWeigth(){
@@ -72,9 +73,9 @@ function WeightMath (length, weight, side) { //stores individual weights
 let momentum = 0
 
 function angelCalc(effect){
-  momentum = effect/400 + momentum/1.1
-  if(angel < 180) angel += momentum*0.95
-  else angel -= momentum*0.95
+  momentum = effect/400 + momentum/1.03
+  if(angel < 180) angel += momentum
+  else angel += momentum
 }
 
 function drawScene(){
@@ -85,5 +86,15 @@ function drawScene(){
   line(0, 0, width/2, 0)
   stroke(10, 10, 255)
   line(-width/2, 0, 0, 0)
+  drawWeights()
   pop()
+}
+
+function drawWeights() {
+  for (let i = 0; i < right.length; i++){
+    ellipse(right[i].length*shortening, 0, right[i].weight)
+  }
+  for (let i = 0; i < left.length; i++){
+    ellipse(-left[i].length*shortening, 0, left[i].weight)
+  }
 }
