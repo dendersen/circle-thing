@@ -11,6 +11,8 @@ function setup() {
 
 let running = true //stops program
 function draw() {
+  frameRate(2)
+  if(angel < 0) angel *= -1
   angel = angel % 360
   if(!running) return
   background(backgroundShade)
@@ -71,22 +73,34 @@ function WeightMath (length, weight, side) { //stores individual weights
 }
 
 let momentum = 0
-
+let tempAngel = 0
 function angelCalc(effect){
-  momentum = effect/400 + momentum/1.03
-  if(angel < 180) angel += momentum
-  else angel += momentum
+  momentum = effect/1000 + momentum/1.03
+  tempAngel = angel
+  angel += Math.floor(momentum)
 }
 
 function drawScene(){
   push()
   translate(width/2, height/2)
-  rotate(radians(90-angel))
-  stroke(255, 10, 10)
-  line(0, 0, width/2, 0)
-  stroke(10, 10, 255)
-  line(-width/2, 0, 0, 0)
-  drawWeights()
+  for (let i = tempAngel; i != angel || i-360 == angel; i++){
+    console.log(i,angel)
+    rotate(radians(90-i))
+    stroke(255, 10, 10)
+    line(0, 0, width/2, 0)
+    stroke(10, 10, 255)
+    line(-width/2, 0, 0, 0)
+    drawWeights()
+    i = i%360
+  }
+  if(angel = 90){
+    rotate(radians(90-angel))
+    stroke(255, 10, 10)
+    line(0, 0, width/2, 0)
+    stroke(10, 10, 255)
+    line(-width/2, 0, 0, 0)
+    drawWeights()
+  }
   pop()
 }
 
