@@ -93,7 +93,7 @@ function drawScene(){
     drawWeights()
     i = i%360
   }
-  if(angel = 90){
+  if(angel == tempAngel){
     rotate(radians(90-angel))
     stroke(255, 10, 10)
     line(0, 0, width/2, 0)
