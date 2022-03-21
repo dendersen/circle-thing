@@ -11,7 +11,7 @@ function setup() {
 
 let running = true //stops program
 function draw() {
-  frameRate(1)
+  frameRate(30)
   if(!running) return
   background(backgroundShade)
   line(width/2, height, width/2, -height)
@@ -93,6 +93,7 @@ function drawScene(){
     draww(tempAngel)
     tempAngel = angelCheck(tempAngel, jji)
     tempAngel = tempAngel % 360
+    if (tempAngel < 0 ) tempAngel = 360
     jji++
   }
   function draww(angels){
@@ -121,9 +122,9 @@ function drawScene(){
         if(momentum > 0) return(temp-1)
         else return (temp+1)
       console.log(";high = " + temp1,";low = " + temp2, ";angel = " + angel, ";safety = " + safety,";iteration" + iteration)
-      temp1 = temp1 % 360
-      if(temp2 <= 0) temp2 = 360
-      if(temp1 <= 0) temp1 = 360
+      if(temp1 == 361) temp1 = 0
+      if(temp2 == -1) temp2 = 360
+      if(temp1 == -1) temp1 = 360
       if(temp1 == angel) return (temp +1)
       if(temp2 == angel) return (temp -1)
     }
