@@ -86,7 +86,7 @@ function drawScene(){
   safety++
   translate(width/2, height/2)
 
-  draww(angel)
+  if (tempAngel == angel) draww(angel)
   while (tempAngel != angel){
     draww(tempAngel)
     tempAngel = angelCheck(tempAngel)
@@ -104,21 +104,23 @@ function drawScene(){
     pop()
   }
   function angelCheck(temp){
-    let safety = 0
+    var safety = 0
     let temp1 = temp
     let temp2 = temp
     while(true){
-      if(safety > 370) return(angel)
+      if(safety > 180) {
+        throw ("safety limit exeded", ";angel goal:" + angel,";start angel:" +  temp,";temp1:" +  temp1,";temp2:" + temp2)
+      }
       safety++
       temp1++
       temp2--
-      if(temp1 == angel && temp2 == angel){
-        if(momentum > 0)return(temp-1)
-        else return (temp+1) 
-      }
-      console.log(temp1,temp2,angel)
+      if(temp1 == angel && temp2 == angel)
+        if(momentum > 0) return(temp-1)
+        else return (temp+1)
+      console.log(";high = " + temp1,";low = " + temp2, ";angel = " + angel, ";safety = " + safety)
       temp1 = temp1 % 360
-      if(temp2 < 0) temp2 =360
+      if(temp2 <= 0) temp2 = 360
+      if(temp1 <= 0) temp1 = 360
       if(temp1 == angel) return (temp +1)
       if(temp2 == angel) return (temp -1)
     }
