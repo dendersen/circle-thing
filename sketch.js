@@ -11,14 +11,14 @@ function setup() {
 
 let running = true //stops program
 function draw() {
-  frameRate(2)
-  if(angel < 0) angel *= -1
-  angel = angel % 360
+  frameRate(1)
   if(!running) return
   background(backgroundShade)
   line(width/2, height, width/2, -height)
   addWeigth() //adds weight to system
   angelCalc(calcEffect()) //creates the next angel
+  if(angel < 0) angel += 360
+  angel = angel % 360
   drawScene() //draws the current scene
 }
 
@@ -81,27 +81,48 @@ function angelCalc(effect){
 }
 
 function drawScene(){
-  push()
+  let safety = 0
+  if(safety > 400) return
+  safety++
   translate(width/2, height/2)
-  for (let i = tempAngel; i != angel || i-360 == angel; i++){
-    console.log(i,angel)
-    rotate(radians(90-i))
+
+  draww(angel)
+  while (tempAngel != angel){
+    draww(tempAngel)
+    tempAngel = angelCheck(tempAngel)
+    tempAngel = tempAngel % 360
+  }
+  function draww(angels){
+    push()
+    // console.log(angels,angel)
+    rotate(radians(90-angels))
     stroke(255, 10, 10)
     line(0, 0, width/2, 0)
     stroke(10, 10, 255)
     line(-width/2, 0, 0, 0)
     drawWeights()
-    i = i%360
+    pop()
   }
-  if(angel == tempAngel){
-    rotate(radians(90-angel))
-    stroke(255, 10, 10)
-    line(0, 0, width/2, 0)
-    stroke(10, 10, 255)
-    line(-width/2, 0, 0, 0)
-    drawWeights()
+  function angelCheck(temp){
+    let safety = 0
+    let temp1 = temp
+    let temp2 = temp
+    while(true){
+      if(safety > 370) return(angel)
+      safety++
+      temp1++
+      temp2--
+      if(temp1 == angel && temp2 == angel){
+        if(momentum > 0)return(temp-1)
+        else return (temp+1) 
+      }
+      console.log(temp1,temp2,angel)
+      temp1 = temp1 % 360
+      if(temp2 < 0) temp2 =360
+      if(temp1 == angel) return (temp +1)
+      if(temp2 == angel) return (temp -1)
+    }
   }
-  pop()
 }
 
 function drawWeights() {
