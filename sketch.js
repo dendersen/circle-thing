@@ -87,10 +87,13 @@ function drawScene(){
   translate(width/2, height/2)
 
   if (tempAngel == angel) draww(angel)
+  let jji = 0
   while (tempAngel != angel){
+    if (jji > 360) throw ("too many iterations", ";angel goal:" + angel, ";start angel:" +  tempAngel, ";iterations:" + jji)
     draww(tempAngel)
-    tempAngel = angelCheck(tempAngel)
+    tempAngel = angelCheck(tempAngel, jji)
     tempAngel = tempAngel % 360
+    jji++
   }
   function draww(angels){
     push()
@@ -103,13 +106,13 @@ function drawScene(){
     drawWeights()
     pop()
   }
-  function angelCheck(temp){
+  function angelCheck(temp, iteration){
     var safety = 0
     let temp1 = temp
     let temp2 = temp
     while(true){
       if(safety > 180) {
-        throw ("safety limit exeded", ";angel goal:" + angel,";start angel:" +  temp,";temp1:" +  temp1,";temp2:" + temp2)
+        throw ("safety limit exeded" + "   ;angel goal:" + angel + "   ;start angel:" +  temp + "   ;temp1:" +  temp1 + "   ;temp2:" + temp2)
       }
       safety++
       temp1++
@@ -117,7 +120,7 @@ function drawScene(){
       if(temp1 == angel && temp2 == angel)
         if(momentum > 0) return(temp-1)
         else return (temp+1)
-      console.log(";high = " + temp1,";low = " + temp2, ";angel = " + angel, ";safety = " + safety)
+      console.log(";high = " + temp1,";low = " + temp2, ";angel = " + angel, ";safety = " + safety,";iteration" + iteration)
       temp1 = temp1 % 360
       if(temp2 <= 0) temp2 = 360
       if(temp1 <= 0) temp1 = 360
