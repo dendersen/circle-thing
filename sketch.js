@@ -1,5 +1,6 @@
 let backgroundShade = 80
 let shortening = 20
+let debug = false
 
 function setup() {
   createCanvas(windowWidth/20*19, windowHeight/20*19); //canvas
@@ -7,11 +8,12 @@ function setup() {
   angel = 90//sets angel
   background(backgroundShade)
   line(width/2, height, width/2, -height)
+  frameRate(30)
 }
 
 let running = true //stops program
 function draw() {
-  frameRate(30)
+  // frameRate(30)
   if(!running) return
   background(backgroundShade)
   line(width/2, height, width/2, -height)
@@ -76,8 +78,8 @@ let momentum = 0
 let tempAngel = 0
 function angelCalc(effect){
   momentum = effect/1000 + momentum/1.03
-  tempAngel = angel
-  angel += Math.floor(momentum)
+  tempAngel = Math.round(angel)
+  angel += momentum
 }
 
 function drawScene(){
@@ -86,10 +88,10 @@ function drawScene(){
   safety++
   translate(width/2, height/2)
 
-  if (tempAngel == angel) draww(angel)
+  if (tempAngel == Math.round(angel)) draww(angel)
   let jji = 0
-  while (tempAngel != angel){
-    if (jji > 360) throw ("too many iterations", ";angel goal:" + angel, ";start angel:" +  tempAngel, ";iterations:" + jji)
+  while (tempAngel != Math.round(angel)){
+    if (jji > 360) throw ("too many iterations" + "   ;angel goal:" + angel + "   ;start angel:" +  tempAngel + "   ;iterations:" + jji)
     draww(tempAngel)
     tempAngel = angelCheck(tempAngel, jji)
     tempAngel = tempAngel % 360
@@ -107,26 +109,29 @@ function drawScene(){
     drawWeights()
     pop()
   }
+
   function angelCheck(temp, iteration){
     var safety = 0
     let temp1 = temp
     let temp2 = temp
+    let floorAngel = Math.round(angel)
     while(true){
       if(safety > 180) {
-        throw ("safety limit exeded" + "   ;angel goal:" + angel + "   ;start angel:" +  temp + "   ;temp1:" +  temp1 + "   ;temp2:" + temp2)
+        throw ("safety limit exeded" + "   ;angel goal:" + floorAngel + "   ;start angel:" +  temp + "   ;temp1:" +  temp1 + "   ;temp2:" + temp2)
       }
+      if(floorAngel < 0) floorAngel *= -1
+      if(temp1 == floorAngel && temp2 == floorAngel)
+        if(momentum > 0) return(temp-1)
+        else return (temp+1)
       safety++
       temp1++
       temp2--
-      if(temp1 == angel && temp2 == angel)
-        if(momentum > 0) return(temp-1)
-        else return (temp+1)
-      console.log(";high = " + temp1,";low = " + temp2, ";angel = " + angel, ";safety = " + safety,";iteration" + iteration)
+      if(debug)console.log(";high = " + temp1,";low = " + temp2, ";angel = " + floorAngel, ";safety = " + safety,";iteration" + iteration)
       if(temp1 == 361) temp1 = 0
       if(temp2 == -1) temp2 = 360
       if(temp1 == -1) temp1 = 360
-      if(temp1 == angel) return (temp +1)
-      if(temp2 == angel) return (temp -1)
+      if(temp1 == floorAngel) return (temp +1)
+      if(temp2 == floorAngel) return (temp -1)
     }
   }
 }
