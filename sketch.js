@@ -26,7 +26,7 @@ function draw() {
 
 function mousePoint(axes){//makes weight size base on mouse
   if(axes) return(Math.floor((mouseX-width/2)/shortening))//left - right
-  return (Math.floor((height-mouseY)/shortening))//up - down
+  return (Math.floor((height-mouseY)/(shortening*2)))//up - down
 }
 
 function addWeigth(){
